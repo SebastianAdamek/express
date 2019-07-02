@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  form(method="post")
+    p
+      label Tytuł wpisu
+      br
+      input(type="text" name="title")
+    p
+      label Treść
+      br
+      textarea(name="description", cols="30", rows="10") 
+    p
+      input(type="submit" value="Opublikuj")

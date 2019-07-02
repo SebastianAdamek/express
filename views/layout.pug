@@ -2,6 +2,9 @@ doctype html
 mixin item(title, url) 
   li
     a(href=url class=path===url ? "active" : "")=title
+mixin item1(title, url)
+  li
+    a(href=url style=`${session ? "display: block" : "display:none"}`)=title
 
 html
   head
@@ -13,5 +16,8 @@ html
       +item("Aktulaności", "/news")
       +item("Quiz", "/quiz")
       +item("Admin", "/admin")
+      +item1("Dodoaj Newsa", "/admin/news/add")
+      +item1("Wyloguj się", "/logout")
+  
 
     block content

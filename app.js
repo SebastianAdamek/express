@@ -4,8 +4,13 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-
+const mongoose = require("mongoose");
 const config = require("./config");
+
+mongoose.connect(config.db, { useNewUrlParser: true });
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+
 const indexRouter = require("./routes/index");
 const newsRouter = require("./routes/news");
 const quizRouter = require("./routes/quiz");
@@ -32,6 +37,9 @@ app.use(
 );
 
 app.use(function(req, res, next) {
+  if (req.session.admin) {
+    res.locals.session = req.session.admin;
+  }
   res.locals.path = req.path;
   next();
 });

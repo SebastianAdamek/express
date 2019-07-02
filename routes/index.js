@@ -7,11 +7,7 @@ const pass = "123";
 router.get("/", (req, res) => res.render("index", { title: "Express" }));
 
 router.get("/login", (req, res) => {
-  if (req.session.admin) {
-    res.redirect("/admin");
-
-    return;
-  }
+  if (req.session.admin) return res.redirect("/admin");
   res.render("login", { title: "Logowanie" });
 });
 
@@ -20,9 +16,13 @@ router.post("/login", (req, res) => {
   if (body.password === pass && body.login === login) {
     req.session.admin = 1;
     res.redirect("/admin");
-  } else {
-    res.redirect("/login");
   }
+  res.redirect("/login");
+});
+
+router.get("/logout", (req, res) => {
+  req.session.admin = undefined;
+  res.redirect("/");
 });
 
 module.exports = router;
