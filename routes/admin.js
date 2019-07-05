@@ -7,18 +7,46 @@ router.all("*", (req, res, next) =>
 );
 
 /* GET home page. */
-router.get("/", (req, res) => res.render("admin/index", { title: "Admin" }));
+// Wyświetlanie zawartości bazy danych
+router.get("/", (req, res) => {
+  News.find({}, (err, data) => {
+    data.forEach(d => {
+      const date = new Date(d.date);
+      d.dd = `${date.getDay() < 10 ? "0" + date.getDate() : date.getDate()}-${
+        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
+      }-${date.getFullYear()}`;
+    });
+    console.log(data);
+    // console.log(data);
+    return res.render("admin/index", { title: "Admin", data });
+  });
+});
 
 /* Router do dodawania newsów */
 router.get("/news/add", (req, res) =>
-  res.render("admin/news", { title: "Dodaj news" })
+  res.render("admin/news", { title: "Dodaj news", body: {} })
 );
 
+// Zapisuwanie rekordów do bazy danych wraz ze wstepną walidacją danych
 router.post("/news/add", (req, res) => {
-  const newsData = new News(req.body);
+  const body = req.body;
+  console.log(body);
+  const newsData = new News(body);
+  const errors = newsData.validateSync();
 
-  newsData.save(err => console.log(err));
+  newsData.save(err => {
+    if (err) {
+      return res.render("admin/news", { title: "Dodaj news", errors, body });
+    }
 
+    res.redirect("/admin");
+  });
+});
+
+router.get("/news/delete/:id", (req, res) => {
+  News.findByIdAndDelete(req.params.id, err => {
+    console.log(err);
+  });
   res.redirect("/admin");
 });
 

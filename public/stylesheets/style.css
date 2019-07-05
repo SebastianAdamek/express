@@ -39,3 +39,7 @@ a {
 .active {
   font-weight: bold;
 }
+
+.red {
+  color: red;
+}

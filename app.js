@@ -10,13 +10,13 @@ const config = require("./config");
 mongoose.connect(config.db, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
-
 const indexRouter = require("./routes/index");
 const newsRouter = require("./routes/news");
 const quizRouter = require("./routes/quiz");
 const adminRouter = require("./routes/admin");
 
 const app = express();
+app.set("x-powered-by", false);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

@@ -4,7 +4,7 @@ mixin item(title, url)
     a(href=url class=path===url ? "active" : "")=title
 mixin item1(title, url)
   li
-    a(href=url style=`${session ? "display: block" : "display:none"}`)=title
+    a(href=url class=path===url ? "active" : "" style=`${session ? "display: block" : "display:none"}`)=title
 
 html
   head
